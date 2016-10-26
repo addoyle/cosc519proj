@@ -1,4 +1,4 @@
-package sample;
+package towson.cosc519.group6;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
