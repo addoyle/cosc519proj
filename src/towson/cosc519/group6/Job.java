@@ -90,6 +90,6 @@ public class Job {
             }
         }
 
-        return label + " (" + start + ", " + totalBurst + "):\n" + out;
+        return label + " (" + start + ", " + totalBurst + ")\n" + out;
     }
 }
