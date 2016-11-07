@@ -1,4 +1,4 @@
-package towson.cosc519.group6;
+package towson.cosc519.group6.ui;
 
 import javafx.event.ActionEvent;
 

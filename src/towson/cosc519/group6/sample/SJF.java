@@ -1,6 +1,6 @@
-//http://www.javaengineeringprograms.com/sjf-shortest-job-first-scheduling-algorithm-program-in-java/
+package towson.cosc519.group6.sample;//http://www.javaengineeringprograms.com/sjf-shortest-job-first-scheduling-algorithm-program-in-java/
 
-
+// TODO: Remove this file once it's been converted to a Scheduler
 
 import java.util. * ;
 class SJF {

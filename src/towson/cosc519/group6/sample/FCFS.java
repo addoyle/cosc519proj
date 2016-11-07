@@ -1,4 +1,9 @@
+package towson.cosc519.group6.sample;
+
 import java.io. * ;
+
+// TODO: Remove this file once it's been converted to a Scheduler
+
 class fcfs {
 	public static void main(String args[]) throws Exception {
 

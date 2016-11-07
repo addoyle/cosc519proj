@@ -1,3 +1,7 @@
+package towson.cosc519.group6.sample;
+
+// TODO: Remove this file once it's been converted to a Scheduler
+
 import java.io.*;
 import java.util.*;
 class process {
