@@ -1,0 +1,16 @@
+.btn-primary {
+    -fx-background-color: #337ab7;
+    -fx-border-color: #2e6da4;
+    -fx-text-fill: #fff;
+    -fx-border-radius: 3px;
+    -fx-min-height: 25px;
+    -fx-label-padding: -1px 0 0 0;
+}
+.btn-primary:hover {
+    -fx-background-color: #286090;
+    -fx-border-color: #204d74;
+}
+.btn-primary:pressed {
+    -fx-background-color: #204d74;
+    -fx-border-color: #122b40;
+}
