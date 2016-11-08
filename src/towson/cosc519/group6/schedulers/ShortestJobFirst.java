@@ -3,9 +3,9 @@ package towson.cosc519.group6.schedulers;
 import towson.cosc519.group6.Job;
 
 /**
- * First come first serve scheduler. Schedules the first job in the queue as the current job.
+ * Shortest job first, prioritizes the current shortest job
  */
-public class FirstComeFirstServe extends Scheduler {
+public class ShortestJobFirst extends Scheduler {
     @Override
     protected Job getNextJob() {
         return readyQueue.get(0);
@@ -13,11 +13,13 @@ public class FirstComeFirstServe extends Scheduler {
 
     @Override
     public String getShortLabel() {
-        return "FCFS";
+        return "SJF";
     }
 
     @Override
     public String getLabel() {
-        return "First Come First Serve";
+        return "Shortest Job First";
     }
+
+
 }
