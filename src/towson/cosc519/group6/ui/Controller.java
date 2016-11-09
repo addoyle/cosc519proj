@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.util.StringConverter;
 import towson.cosc519.group6.Job;
+import towson.cosc519.group6.Main;
 import towson.cosc519.group6.schedulers.Scheduler;
 import java.net.URL;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ import static javafx.scene.layout.BorderPane.setAlignment;
  * Handles all UI interactions
  */
 public class Controller implements Initializable {
-    @FXML private Scene scene;
     @FXML private Spinner<Integer> burstField;
     @FXML private Spinner<Integer> startTimeField;
     @FXML private TableColumn<Job, String> processNumCol;
@@ -37,6 +37,8 @@ public class Controller implements Initializable {
     @FXML private TableColumn<Job, Integer> startTimeCol;
     @FXML private TableView<Job> procsTable;;
     @FXML private TabPane schedTabs;
+    @FXML private Button addBtn;
+    @FXML private Button runBtn;
     private final Map<Tab, Scheduler> tabSchedulerMap = new HashMap<>();
     private final ObservableList<Job> jobs = FXCollections.observableArrayList();
 
@@ -72,6 +74,19 @@ public class Controller implements Initializable {
                 e.printStackTrace();
             }
         }
+
+        // Load FontAwesome
+        Font.loadFont(Main.class.getResource("fontawesome.ttf").toExternalForm(), 12);
+
+        // Add icons to buttons
+        iconify(addBtn, FontAwesome.PLUS);
+        iconify(runBtn, FontAwesome.ROCKET);
+    }
+
+    private static void iconify(Labeled node, FontAwesome icon) {
+        Label iconLabel = new Label(icon.getIcon());
+        iconLabel.getStyleClass().add("i");
+        node.setGraphic(iconLabel);
     }
 
     /**

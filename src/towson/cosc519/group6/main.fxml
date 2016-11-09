@@ -21,9 +21,9 @@
             <Spinner fx:id="burstField" editable="true" onKeyPressed="#spinnerKeyPressed" prefHeight="27.0" prefWidth="100.0" />
         <Label text="Start Time:" />
             <Spinner fx:id="startTimeField" editable="true" onKeyPressed="#spinnerKeyPressed" prefHeight="27.0" prefWidth="100.0" />
-        <Button id="addQueueBtn" mnemonicParsing="false" onAction="#addtoQueueClick" text="Add to Queue" />
+        <Button id="addQueueBtn" fx:id="addBtn" mnemonicParsing="false" onAction="#addtoQueueClick" text="Add to Queue" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="5.0" />
-            <Button id="runJobsBtn" mnemonicParsing="false" onAction="#runProcesses" prefHeight="25.0" prefWidth="105.0" styleClass="btn-primary" text="Run Jobs" />
+            <Button id="runJobsBtn" fx:id="runBtn" defaultButton="true" mnemonicParsing="false" onAction="#runProcesses" styleClass="btn-primary" text="Run Jobs" />
       </items>
     </ToolBar>
   </top>
