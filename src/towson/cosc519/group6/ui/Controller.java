@@ -7,24 +7,31 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.StringConverter;
 import towson.cosc519.group6.Job;
 import towson.cosc519.group6.Main;
 import towson.cosc519.group6.schedulers.Scheduler;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import static javafx.scene.control.SelectionMode.MULTIPLE;
 import static javafx.scene.layout.AnchorPane.*;
 import static javafx.scene.layout.BorderPane.setAlignment;
+import towson.cosc519.group6.ui.GanttChart.gnattData;
+
 
 /**
  * Handles all UI interactions
@@ -35,7 +42,7 @@ public class Controller implements Initializable {
     @FXML private TableColumn<Job, String> processNumCol;
     @FXML private TableColumn<Job, Integer> burstTimeCol;
     @FXML private TableColumn<Job, Integer> startTimeCol;
-    @FXML private TableView<Job> procsTable;;
+    @FXML private TableView<Job> procsTable;
     @FXML private TabPane schedTabs;
     @FXML private Button addBtn;
     @FXML private Button runBtn;
@@ -184,5 +191,31 @@ public class Controller implements Initializable {
      */
     @FXML public void runProcesses(){
         // TODO: implement this
+
+
     }
+
+    @FXML public Node initializeChart(){
+        final NumberAxis xAxis = new NumberAxis();
+        final CategoryAxis yAxis = new CategoryAxis();
+        GanttChart chart = new GanttChart(xAxis,yAxis);
+
+        xAxis.setLabel("Time");
+        xAxis.setTickLabelFill(Color.BLACK);
+        xAxis.setMinorTickCount(4);
+
+        yAxis.setLabel("Process Number");
+        yAxis.setTickLabelFill(Color.BLACK);
+        yAxis.setTickLabelGap(5);
+
+        chart.setLegendVisible(false);
+        chart.setBlockHeight(50);
+        return chart;
+    }
+
+    @FXML public void addDatatoChart() {
+      // TODO: implement this
+
+    }
+
 }
