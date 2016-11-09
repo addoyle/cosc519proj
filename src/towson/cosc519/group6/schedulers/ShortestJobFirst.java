@@ -8,7 +8,14 @@ import towson.cosc519.group6.Job;
 public class ShortestJobFirst extends Scheduler {
     @Override
     protected Job getNextJob() {
-        return readyQueue.get(0);
+        Job shortestJob = readyQueue.get(0);
+        for (Job job : readyQueue) {
+            if (job.getBurst() < shortestJob.getBurst()) {
+                shortestJob = job;
+            }
+        }
+
+        return shortestJob;
     }
 
     @Override

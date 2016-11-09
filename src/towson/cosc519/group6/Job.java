@@ -36,6 +36,12 @@ public class Job {
         return --burst;
     }
 
+    public void reset() {
+        burst = totalBurst;
+        wait = 0;
+        statusList.clear();
+    }
+
     public boolean isDone() {
         return burst <= 0;
     }

@@ -3,7 +3,6 @@ package towson.cosc519.group6.schedulers;
 import towson.cosc519.group6.Job;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -29,7 +28,7 @@ public abstract class Scheduler {
      * Constructor
      */
     public Scheduler() {
-        readyQueue = new LinkedList<>();
+        readyQueue = new ArrayList<>();
         jobs = new LinkedList<>();
     }
 
@@ -73,7 +72,7 @@ public abstract class Scheduler {
             // Add in jobs to be started
             for (Job job : jobs) {
                 if (job.getStart() == clock) {
-                    readyQueue.add(job);
+                    addToReadyQueue(job);
                 }
             }
 
@@ -83,7 +82,7 @@ public abstract class Scheduler {
 
             // Remove the job from the ready queue if completed
             if (runningJob.isDone()) {
-                readyQueue.remove(runningJob);
+                removeFromReadyQueue(runningJob);
             }
 
             // Update the wait time for all other jobs
@@ -97,6 +96,14 @@ public abstract class Scheduler {
             // Clock cycle complete!
             clock++;
         } while (!readyQueue.isEmpty());
+    }
+
+    protected boolean addToReadyQueue(Job job) {
+        return readyQueue.add(job);
+    }
+
+    protected boolean removeFromReadyQueue(Job job) {
+        return readyQueue.remove(job);
     }
 
     public List<Job> getReadyQueue() {
