@@ -1,16 +1,18 @@
 package towson.cosc519.group6.schedulers;
 
-import towson.cosc519.group6.model.Job;
+import towson.cosc519.group6.model.RunnableJob;
+
+import java.util.List;
 
 /**
  * Shortest job first, prioritizes the current shortest job
  */
 public class ShortestJobFirst extends Scheduler {
     @Override
-    protected Job getNextJob() {
-        Job shortestJob = readyQueue.get(0);
-        for (Job job : readyQueue) {
-            if (job.getBurst() < shortestJob.getBurst()) {
+    protected RunnableJob getNextJob(List<? extends RunnableJob> readyQueue) {
+        RunnableJob shortestJob = readyQueue.get(0);
+        for (RunnableJob job : readyQueue) {
+            if (job.getRemainingBurst() < shortestJob.getRemainingBurst()) {
                 shortestJob = job;
             }
         }

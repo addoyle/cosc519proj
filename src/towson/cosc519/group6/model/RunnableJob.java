@@ -4,21 +4,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Represents a job that is running or has ran
+ * Wrapper class of a job that is running or has ran
  */
-public class RunnableJob extends Job {
+public class RunnableJob {
     private int remainingBurst;
     private int wait;
     private final List<JobStatus> statusList;
-
-    public RunnableJob(String label, int burst, int start) {
-        this(new Job(label, burst, start));
-    }
+    private final Job job;
 
     public RunnableJob(Job job) {
-        super(job);
-
-        remainingBurst = getBurst();
+        this.job = job;
+        remainingBurst = job.getBurst();
         wait = 0;
         statusList = new LinkedList<>();
     }
@@ -57,6 +53,22 @@ public class RunnableJob extends Job {
         this.wait = wait;
     }
 
+    public int getStart() {
+        return job.getStart();
+    }
+
+    public int getBurst() {
+        return job.getBurst();
+    }
+
+    public String getLabel() {
+        return job.getLabel();
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
     public List<JobStatus> getStatusList() {
         return statusList;
     }
@@ -64,7 +76,7 @@ public class RunnableJob extends Job {
     @Override
     public String toString() {
         String out = "";
-        for (int i = 0; i < getStart(); i++) {
+        for (int i = 0; i < job.getStart(); i++) {
             out += ' ';
         }
         for (JobStatus status : statusList) {

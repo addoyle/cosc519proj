@@ -5,22 +5,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.StringConverter;
-import towson.cosc519.group6.model.Job;
 import towson.cosc519.group6.Main;
+import towson.cosc519.group6.model.Job;
+import towson.cosc519.group6.model.SchedulerOutput;
 import towson.cosc519.group6.schedulers.Scheduler;
 
 import java.net.URL;
@@ -29,8 +23,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import static javafx.scene.control.SelectionMode.MULTIPLE;
-import static javafx.scene.layout.AnchorPane.*;
-import static javafx.scene.layout.BorderPane.setAlignment;
+import static towson.cosc519.group6.ui.Utils.createTab;
+import static towson.cosc519.group6.ui.Utils.iconify;
 
 
 /**
@@ -59,7 +53,7 @@ public class Controller implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         processNumCol.setCellValueFactory(new PropertyValueFactory<>("label"));
-        burstTimeCol.setCellValueFactory(new PropertyValueFactory<>("totalBurst"));
+        burstTimeCol.setCellValueFactory(new PropertyValueFactory<>("burst"));
         startTimeCol.setCellValueFactory(new PropertyValueFactory<>("start"));
 
         burstField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE, 1));
@@ -89,46 +83,6 @@ public class Controller implements Initializable {
         iconify(addBtn, FontAwesome.PLUS);
         iconify(runBtn, FontAwesome.ROCKET);
     }
-
-    /**
-     * Add an icon to a button, label, etc.
-     *
-     * @param node    Element to add an icon to
-     * @param icon    Icon to add
-     */
-    private static void iconify(Labeled node, FontAwesome icon) {
-        Label iconLabel = new Label(icon.getIcon());
-        iconLabel.getStyleClass().add("i");
-        node.setGraphic(iconLabel);
-    }
-
-    /**
-     * Create a new tab
-     *
-     * @param scheduler    Scheduler for that particular tab
-     * @return New tab
-     */
-    private Tab createTab(Scheduler scheduler) {
-        AnchorPane anchor = new AnchorPane();
-        BorderPane tabContent = new BorderPane();
-
-        Label title = new Label(scheduler.getLabel());
-        title.setFont(new Font(24.0));
-        setAlignment(title, Pos.CENTER);
-        tabContent.setTop(title);
-
-        tabContent.setCenter(initializeChart());
-
-        anchor.getChildren().add(tabContent);
-
-        setRightAnchor(tabContent, 0.0);
-        setBottomAnchor(tabContent, 0.0);
-        setLeftAnchor(tabContent, 0.0);
-        setTopAnchor(tabContent, 0.0);
-
-        return new Tab(scheduler.getShortLabel(), anchor);
-    }
-
 
     /*
      * Copied and pasted from Spinner
@@ -224,38 +178,10 @@ public class Controller implements Initializable {
         }
 
         // Run the scheduler
-        scheduler.reset();
-        scheduler.addJobs(jobs);
-        scheduler.runJobs();
+        SchedulerOutput output = scheduler.runJobs(jobs);
 
-        // Fill out the chart
-        ((NumberAxis) chart.getXAxis()).setUpperBound(scheduler.getClock());
-    }
-
-    @FXML public Node initializeChart(){
-        final NumberAxis xAxis = new NumberAxis();
-        final CategoryAxis yAxis = new CategoryAxis();
-        GanttChart chart = new GanttChart(xAxis,yAxis);
-
-        xAxis.setLabel("Time");
-        xAxis.setTickLabelFill(Color.BLACK);
-        xAxis.setMinorTickCount(4);
-        xAxis.setLowerBound(0);
-        xAxis.setUpperBound(10);
-        xAxis.setAutoRanging(false);
-
-        yAxis.setLabel("Process");
-        yAxis.setTickLabelFill(Color.BLACK);
-        yAxis.setTickLabelGap(5);
-
-        chart.setLegendVisible(false);
-        chart.setBlockHeight(50);
-        return chart;
-    }
-
-    @FXML public void addDatatoChart() {
-      // TODO: implement this
-
+        // Update the chart
+        Utils.updateChart(chart, output);
     }
 
 }

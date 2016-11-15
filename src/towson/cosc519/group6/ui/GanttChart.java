@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
  * Created by bjoynes on 11/9/2016.
  */
 
-//http://stackoverflow.com/questions/27975898/gantt-chart-from-scratch
+// Referenced from: http://stackoverflow.com/questions/27975898/gantt-chart-from-scratch
 
 
 public class GanttChart extends XYChart<Number, String> {
@@ -24,13 +24,13 @@ public class GanttChart extends XYChart<Number, String> {
     /**
      * Implements extra data
      */
-    public static class ganttData {
+    public static class ExtraData {
 
         public long length;
         public String styleClass;
 
 
-        public ganttData(long lengthMs, String styleClass) {
+        public ExtraData(long lengthMs, String styleClass) {
             super();
             this.length = lengthMs;
             this.styleClass = styleClass;
@@ -91,11 +91,11 @@ public class GanttChart extends XYChart<Number, String> {
     }
 
     private static String getStyleClass( Object obj) {
-        return ((ganttData) obj).getStyleClass();
+        return ((ExtraData) obj).getStyleClass();
     }
 
     private static double getLength( Object obj) {
-        return ((ganttData) obj).getLength();
+        return ((ExtraData) obj).getLength();
     }
 
     @Override

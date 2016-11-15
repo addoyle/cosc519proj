@@ -1,13 +1,15 @@
 package towson.cosc519.group6.schedulers;
 
-import towson.cosc519.group6.model.Job;
+import towson.cosc519.group6.model.RunnableJob;
+
+import java.util.List;
 
 /**
  * First come first serve scheduler. Schedules the first job in the queue as the current job.
  */
 public class FirstComeFirstServe extends Scheduler {
     @Override
-    protected Job getNextJob() {
+    protected RunnableJob getNextJob(List<? extends RunnableJob> readyQueue) {
         return readyQueue.get(0);
     }
 

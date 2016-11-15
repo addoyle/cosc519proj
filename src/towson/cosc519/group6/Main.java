@@ -12,6 +12,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         Scene scene = new Scene(root, 800, 600);
+        root.minWidth(800);
+        root.minHeight(600);
 
         primaryStage.setTitle("CPU Scheduler Simulation");
         primaryStage.setScene(scene);
