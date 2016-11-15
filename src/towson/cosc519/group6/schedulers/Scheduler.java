@@ -25,9 +25,9 @@ public abstract class Scheduler {
     private int totalWaitTime = 0;
 
     /**
-     * Constructor
+     * All schedulers are singletons, thus protected constructor
      */
-    public Scheduler() {
+    protected Scheduler() {
         readyQueue = new ArrayList<>();
         jobs = new LinkedList<>();
     }
@@ -62,10 +62,19 @@ public abstract class Scheduler {
         jobs.add(job);
     }
 
+    public void addJobs(Collection<? extends Job> jobs) {
+        this.jobs.addAll(jobs);
+    }
+
     /**
      * Run the jobs!
      */
     public void runJobs() {
+        // No jobs, nothing to do
+        if (jobs.isEmpty()) {
+            return;
+        }
+
         clock = 0;
 
         do {
@@ -76,13 +85,17 @@ public abstract class Scheduler {
                 }
             }
 
-            // Update the currently running job
-            Job runningJob = getNextJob();
-            runningJob.doBurst();
+            Job runningJob = null;
+            if (!readyQueue.isEmpty()) {
+                // Update the currently running job
+                runningJob = getNextJob();
+                runningJob.doBurst();
 
-            // Remove the job from the ready queue if completed
-            if (runningJob.isDone()) {
-                removeFromReadyQueue(runningJob);
+
+                // Remove the job from the ready queue if completed
+                if (runningJob.isDone()) {
+                    removeFromReadyQueue(runningJob);
+                }
             }
 
             // Update the wait time for all other jobs
@@ -124,6 +137,21 @@ public abstract class Scheduler {
 
     public List<Job> getJobs() {
         return jobs;
+    }
+
+    /**
+     * Reset the scheduler
+     */
+    public void reset() {
+        readyQueue.clear();
+        jobs.clear();
+        clock = 0;
+        totalWaitTime = 0;
+
+        // Reset jobs
+        for (Job job : jobs) {
+            job.reset();
+        }
     }
 
     /**

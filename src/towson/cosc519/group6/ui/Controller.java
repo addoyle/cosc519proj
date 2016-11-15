@@ -7,9 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -22,15 +22,15 @@ import javafx.util.StringConverter;
 import towson.cosc519.group6.Job;
 import towson.cosc519.group6.Main;
 import towson.cosc519.group6.schedulers.Scheduler;
+
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import static javafx.scene.control.SelectionMode.MULTIPLE;
 import static javafx.scene.layout.AnchorPane.*;
 import static javafx.scene.layout.BorderPane.setAlignment;
-import towson.cosc519.group6.ui.GanttChart.gnattData;
 
 
 /**
@@ -90,6 +90,12 @@ public class Controller implements Initializable {
         iconify(runBtn, FontAwesome.ROCKET);
     }
 
+    /**
+     * Add an icon to a button, label, etc.
+     *
+     * @param node    Element to add an icon to
+     * @param icon    Icon to add
+     */
     private static void iconify(Labeled node, FontAwesome icon) {
         Label iconLabel = new Label(icon.getIcon());
         iconLabel.getStyleClass().add("i");
@@ -110,6 +116,8 @@ public class Controller implements Initializable {
         title.setFont(new Font(24.0));
         setAlignment(title, Pos.CENTER);
         tabContent.setTop(title);
+
+        tabContent.setCenter(initializeChart());
 
         anchor.getChildren().add(tabContent);
 
@@ -133,7 +141,10 @@ public class Controller implements Initializable {
             StringConverter<T> converter = valueFactory.getConverter();
             if (converter != null) {
                 T value = converter.fromString(text);
-                valueFactory.setValue(value);
+
+                if (value != null) {
+                    valueFactory.setValue(value);
+                }
             }
         }
     }
@@ -173,6 +184,10 @@ public class Controller implements Initializable {
      * @param e
      */
     @FXML public void addtoQueueClick(ActionEvent e) {
+        // Sync the text with the actual value
+        commitEditorText(burstField);
+        commitEditorText(startTimeField);
+
         // Parse input
         int burstTime = burstField.getValue();
         int startTime = startTimeField.getValue();
@@ -190,9 +205,33 @@ public class Controller implements Initializable {
      * Runs the CPU scheduler, and generates a graphic of the results
      */
     @FXML public void runProcesses(){
-        // TODO: implement this
+        System.out.println(jobs);
 
+        // Get current tab
+        Tab curTab = null;
+        for (Tab tab : schedTabs.getTabs()) {
+            if (tab.isSelected()) {
+                curTab = tab;
+                break;
+            }
+        }
 
+        // Get the graph
+        GanttChart chart = Utils.findFirst((Parent) curTab.getContent(), GanttChart.class);
+
+        // Get the scheduler for that tab
+        Scheduler scheduler = tabSchedulerMap.get(curTab);
+        if (scheduler == null) {
+            throw new UnsupportedOperationException("No scheduler for this tab");
+        }
+
+        // Run the scheduler
+        scheduler.reset();
+        scheduler.addJobs(jobs);
+        scheduler.runJobs();
+
+        // Fill out the chart
+        ((NumberAxis) chart.getXAxis()).setUpperBound(scheduler.getClock());
     }
 
     @FXML public Node initializeChart(){
@@ -203,8 +242,11 @@ public class Controller implements Initializable {
         xAxis.setLabel("Time");
         xAxis.setTickLabelFill(Color.BLACK);
         xAxis.setMinorTickCount(4);
+        xAxis.setLowerBound(0);
+        xAxis.setUpperBound(10);
+        xAxis.setAutoRanging(false);
 
-        yAxis.setLabel("Process Number");
+        yAxis.setLabel("Process");
         yAxis.setTickLabelFill(Color.BLACK);
         yAxis.setTickLabelGap(5);
 
