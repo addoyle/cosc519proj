@@ -1,6 +1,6 @@
 package towson.cosc519.group6.schedulers;
 
-import towson.cosc519.group6.Job;
+import towson.cosc519.group6.model.Job;
 
 /**
  * Round Robin, no priority, cycles through all jobs and runs one burst per job until completion

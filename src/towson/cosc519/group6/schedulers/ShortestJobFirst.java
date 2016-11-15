@@ -1,6 +1,6 @@
 package towson.cosc519.group6.schedulers;
 
-import towson.cosc519.group6.Job;
+import towson.cosc519.group6.model.Job;
 
 /**
  * Shortest job first, prioritizes the current shortest job

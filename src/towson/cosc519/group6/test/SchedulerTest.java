@@ -1,10 +1,8 @@
 package towson.cosc519.group6.test;
 
-import towson.cosc519.group6.Job;
-import towson.cosc519.group6.schedulers.FirstComeFirstServe;
+import towson.cosc519.group6.model.Job;
 import towson.cosc519.group6.schedulers.RoundRobin;
 import towson.cosc519.group6.schedulers.Scheduler;
-import towson.cosc519.group6.schedulers.ShortestJobFirst;
 
 public class SchedulerTest {
     public static void main(String[] args) {

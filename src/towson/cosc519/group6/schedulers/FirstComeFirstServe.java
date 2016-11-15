@@ -1,6 +1,6 @@
 package towson.cosc519.group6.schedulers;
 
-import towson.cosc519.group6.Job;
+import towson.cosc519.group6.model.Job;
 
 /**
  * First come first serve scheduler. Schedules the first job in the queue as the current job.

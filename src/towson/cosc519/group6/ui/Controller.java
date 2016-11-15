@@ -19,7 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.StringConverter;
-import towson.cosc519.group6.Job;
+import towson.cosc519.group6.model.Job;
 import towson.cosc519.group6.Main;
 import towson.cosc519.group6.schedulers.Scheduler;
 
@@ -205,8 +205,6 @@ public class Controller implements Initializable {
      * Runs the CPU scheduler, and generates a graphic of the results
      */
     @FXML public void runProcesses(){
-        System.out.println(jobs);
-
         // Get current tab
         Tab curTab = null;
         for (Tab tab : schedTabs.getTabs()) {

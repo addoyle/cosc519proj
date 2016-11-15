@@ -1,10 +1,13 @@
 package towson.cosc519.group6.schedulers;
 
-import towson.cosc519.group6.Job;
+import towson.cosc519.group6.model.Job;
+import towson.cosc519.group6.model.RunnableJob;
 
 import java.io.File;
 import java.net.URL;
 import java.util.*;
+
+import static java.util.Collections.emptyList;
 
 /**
  * Base class of schedulers. A schedulers takes a list of processes and determines which process should be run
@@ -14,10 +17,10 @@ public abstract class Scheduler {
     public final static Set<Class<? extends Scheduler>> SCHEDULERS = getSchedulers();
 
     // List of jobs waiting to be executed
-    protected final List<Job> readyQueue;
+
 
     // Total list of jobs that have been added
-    private final List<Job> jobs;
+//    private final List<Job> jobs;
 
     // Clock counter
     private int clock = 0;
@@ -28,8 +31,7 @@ public abstract class Scheduler {
      * All schedulers are singletons, thus protected constructor
      */
     protected Scheduler() {
-        readyQueue = new ArrayList<>();
-        jobs = new LinkedList<>();
+//        jobs = new LinkedList<>();
     }
 
     /**
@@ -69,13 +71,16 @@ public abstract class Scheduler {
     /**
      * Run the jobs!
      */
-    public void runJobs() {
+    public List<RunnableJob> runJobs() {
         // No jobs, nothing to do
         if (jobs.isEmpty()) {
-            return;
+            return emptyList();
         }
 
         clock = 0;
+
+        List<RunnableJob> runnableJobs = new LinkedList<>();
+        List<Job> readyQueue = new ArrayList<>();
 
         do {
             // Add in jobs to be started
