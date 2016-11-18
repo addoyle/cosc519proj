@@ -46,8 +46,13 @@ public class Utils {
             GanttChart.Series<Number, String> series = new GanttChart.Series<Number, String>();
             int i = 0;
             for (JobStatus status : job.getStatusList()) {
-                series.getData().add(new GanttChart.Data<Number, String>(i, job.getLabel(), new GanttChart.ExtraData(3, "foo")));
-                i++;
+                if(status == JobStatus.RUNNING){
+                    series.getData().add(new GanttChart.Data<Number, String>(i, job.getLabel(), new GanttChart.ExtraData(1, "status-blue")));
+                    i++;
+                }else{
+                    i++;
+                }
+
             }
             chart.getData().add(series);
         }
