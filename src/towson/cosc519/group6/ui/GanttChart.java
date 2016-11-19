@@ -154,8 +154,10 @@ public class GanttChart extends XYChart<Number, String> {
                         } else {
                             return;
                         }
+
+                        double ratio = this.getHeight() / 5.0;
                         rectangle.setWidth(getLength(item.getExtraValue()) * ((getXAxis() instanceof NumberAxis) ? Math.abs(((NumberAxis)getXAxis()).getScale()) : 1));
-                        rectangle.setHeight(getBlockHeight() * ((getYAxis() instanceof CategoryAxis) ? Math.abs(((CategoryAxis)getYAxis()).getCategories().size()) : 1));
+                        rectangle.setHeight((getBlockHeight() * ratio) / ((CategoryAxis) getYAxis()).getCategories().size());
 
                         // Note: workaround for RT-7689 - saw this in ProgressControlSkin
                         // The region doesn't update itself when the shape is mutated in place, so we

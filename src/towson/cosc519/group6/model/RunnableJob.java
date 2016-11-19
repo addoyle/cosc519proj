@@ -87,6 +87,6 @@ public class RunnableJob {
             }
         }
 
-        return super.toString()  + "\t" + out;
+        return job.toString()  + "\t" + out;
     }
 }

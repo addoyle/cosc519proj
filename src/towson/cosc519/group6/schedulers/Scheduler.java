@@ -8,8 +8,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 
-import static java.util.Collections.emptyList;
-
 /**
  * Base class of schedulers. A schedulers takes a list of processes and determines which process should be run
  * based on its own set of rules.
@@ -115,7 +113,7 @@ public abstract class Scheduler {
      */
     @SuppressWarnings("unchecked")
     private static Set<Class<? extends Scheduler>> getSchedulers() {
-        Set<Class<? extends Scheduler>> schedulers = new HashSet<>();
+        Set<Class<? extends Scheduler>> schedulers = new LinkedHashSet<>();
 
         // Get the path to the packages folder
         String pkg = Scheduler.class.getPackage().getName();

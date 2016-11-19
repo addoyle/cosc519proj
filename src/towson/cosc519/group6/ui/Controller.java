@@ -17,11 +17,14 @@ import towson.cosc519.group6.model.Job;
 import towson.cosc519.group6.model.SchedulerOutput;
 import towson.cosc519.group6.schedulers.Scheduler;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
+import static java.lang.Integer.parseInt;
+import static java.util.Collections.emptyList;
 import static javafx.scene.control.SelectionMode.MULTIPLE;
 import static towson.cosc519.group6.ui.Utils.createTab;
 import static towson.cosc519.group6.ui.Utils.iconify;
@@ -31,6 +34,8 @@ import static towson.cosc519.group6.ui.Utils.iconify;
  * Handles all UI interactions
  */
 public class Controller implements Initializable {
+    private static final List<Job> DEMO_JOBS = loadDemoJobs();
+
     @FXML private Spinner<Integer> burstField;
     @FXML private Spinner<Integer> startTimeField;
     @FXML private TableColumn<Job, String> processNumCol;
@@ -40,6 +45,7 @@ public class Controller implements Initializable {
     @FXML private TabPane schedTabs;
     @FXML private Button addBtn;
     @FXML private Button runBtn;
+    @FXML private Button btnDemo;
     private final Map<Tab, Scheduler> tabSchedulerMap = new HashMap<>();
     private final ObservableList<Job> jobs = FXCollections.observableArrayList();
 
@@ -63,6 +69,7 @@ public class Controller implements Initializable {
         startTimeField.getEditor().setOnKeyPressed(this::spinnerKeyPressed);
 
         procsTable.getSelectionModel().setSelectionMode(MULTIPLE);
+        procsTable.setItems(jobs);
 
         // Load tabs
         for (Class<? extends Scheduler> sClass : Scheduler.SCHEDULERS) {
@@ -82,6 +89,7 @@ public class Controller implements Initializable {
         // Add icons to buttons
         iconify(addBtn, FontAwesome.PLUS);
         iconify(runBtn, FontAwesome.ROCKET);
+        iconify(btnDemo, FontAwesome.TRUCK);
     }
 
     /*
@@ -147,12 +155,9 @@ public class Controller implements Initializable {
         int startTime = startTimeField.getValue();
         String processName = "P" + Integer.toString(jobs.size());
 
-        // Add the job
+        // Add the job which will automatically update the UI
         Job job = new Job(processName, burstTime, startTime);
         jobs.add(job);
-
-        // Update UI
-        procsTable.setItems(jobs);
     }
 
     /**
@@ -169,7 +174,7 @@ public class Controller implements Initializable {
         }
 
         // Get the graph
-        GanttChart chart = Utils.findFirst((Parent) curTab.getContent(), GanttChart.class);
+        GanttChart chart = Utils.findFirstSuccessor((Parent) curTab.getContent(), GanttChart.class);
 
         // Get the scheduler for that tab
         Scheduler scheduler = tabSchedulerMap.get(curTab);
@@ -184,4 +189,28 @@ public class Controller implements Initializable {
         Utils.updateChart(chart, output);
     }
 
+    @FXML public void loadDemoClick(ActionEvent e) {
+        jobs.clear();
+        jobs.addAll(DEMO_JOBS);
+    }
+
+    private static List<Job> loadDemoJobs() {
+        List<Job> jobs = new LinkedList<>();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream("demo.csv")))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().length() > 0) {
+                    String[] parts = line.split(",");
+                    jobs.add(new Job(parts[0], parseInt(parts[1]), parseInt(parts[2])));
+                }
+            }
+
+            return jobs;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return emptyList();
+    }
 }

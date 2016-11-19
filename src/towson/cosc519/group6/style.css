@@ -2,12 +2,9 @@
     -fx-font-family: FontAwesome;
 }
 
-.status-red {
-    -fx-background-color:rgba(128,0,0,0.7);
+.status-running {
+    -fx-background-color: #a5cee2;
 }
-.status-green {
-    -fx-background-color:rgba(0,128,0,0.7);
-}
-.status-blue {
-    -fx-background-color:rgba(0,0,128,0.7);
+.status-waiting {
+    -fx-background-color: #ccc;
 }
