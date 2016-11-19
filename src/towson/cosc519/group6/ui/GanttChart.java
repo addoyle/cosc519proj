@@ -167,7 +167,7 @@ public class GanttChart extends XYChart<Number, String> {
                         region.setCacheShape(false);
                         // position the bubble
                         block.setLayoutX(x);
-                        block.setLayoutY(y);
+                        block.setLayoutY(y - (rectangle.getHeight() / 2));
                     }
                 }
             }
