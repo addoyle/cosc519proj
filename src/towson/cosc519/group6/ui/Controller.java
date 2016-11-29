@@ -35,6 +35,7 @@ import static towson.cosc519.group6.ui.Utils.iconify;
  */
 public class Controller implements Initializable {
     private static final List<Job> DEMO_JOBS = loadDemoJobs();
+    private static final String AVG_WAIT_TIME_MSG = "Average Wait Time: ";
 
     @FXML private Spinner<Integer> burstField;
     @FXML private Spinner<Integer> startTimeField;
@@ -44,11 +45,12 @@ public class Controller implements Initializable {
     @FXML private TableView<Job> procsTable;
     @FXML private TabPane schedTabs;
     @FXML private Button addBtn;
-    @FXML private Button runBtn;
     @FXML private Button btnDemo;
     private final Map<Tab, Scheduler> tabSchedulerMap = new HashMap<>();
     private final ObservableList<Job> jobs = FXCollections.observableArrayList();
     @FXML private Label waitTime;
+    @FXML private Label lblRunning;
+    @FXML private Label lblWaiting;
     /**
      * Initialize the UI
      *
@@ -86,10 +88,15 @@ public class Controller implements Initializable {
         // Load FontAwesome
         Font.loadFont(Main.class.getResource("fontawesome.ttf").toExternalForm(), 12);
 
+        schedTabs.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+            graphOnTab(newTab);
+        });
+
         // Add icons to buttons
         iconify(addBtn, FontAwesome.PLUS);
-        iconify(runBtn, FontAwesome.ROCKET);
         iconify(btnDemo, FontAwesome.TRUCK);
+        iconify(lblRunning, FontAwesome.SQUARE, "label-running");
+        iconify(lblWaiting, FontAwesome.SQUARE, "label-waiting");
     }
 
     /*
@@ -158,26 +165,32 @@ public class Controller implements Initializable {
         // Add the job which will automatically update the UI
         Job job = new Job(processName, burstTime, startTime);
         jobs.add(job);
+
+        // Update graphs with new process
+        graphOnTab(getCurrentTab());
     }
 
     /**
-     * Runs the CPU scheduler, and generates a graphic of the results
+     * Gets the currently selected tab
+     *
+     * @return Selected tab
      */
-    @FXML public void runProcesses(){
-        // Get current tab
-        Tab curTab = null;
+    public Tab getCurrentTab(){
         for (Tab tab : schedTabs.getTabs()) {
             if (tab.isSelected()) {
-                curTab = tab;
-                break;
+                return tab;
             }
         }
 
+        return null;
+    }
+
+    private void graphOnTab(Tab tab) {
         // Get the graph
-        GanttChart chart = Utils.findFirstSuccessor((Parent) curTab.getContent(), GanttChart.class);
+        GanttChart chart = Utils.findFirstSuccessor((Parent) tab.getContent(), GanttChart.class);
 
         // Get the scheduler for that tab
-        Scheduler scheduler = tabSchedulerMap.get(curTab);
+        Scheduler scheduler = tabSchedulerMap.get(tab);
         if (scheduler == null) {
             throw new UnsupportedOperationException("No scheduler for this tab");
         }
@@ -189,14 +202,26 @@ public class Controller implements Initializable {
         Utils.updateChart(chart, output);
 
         //Display Average wait time
-        waitTime.setText(String.valueOf(output.getAverageWaitTime()));
+        waitTime.setText(AVG_WAIT_TIME_MSG + output.getAverageWaitTime());
     }
 
+    /**
+     * Load demo button click
+     *
+     * @param e Event object
+     */
     @FXML public void loadDemoClick(ActionEvent e) {
         jobs.clear();
         jobs.addAll(DEMO_JOBS);
+        graphOnTab(getCurrentTab());
     }
 
+    /**
+     * Load a set of demo jobs, useful for showing an interesting sample
+     * without having to enter all the processes in over and over again.
+     *
+     * @return List of demo jobs
+     */
     private static List<Job> loadDemoJobs() {
         List<Job> jobs = new LinkedList<>();
 

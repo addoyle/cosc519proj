@@ -8,3 +8,9 @@
 .status-waiting {
     -fx-background-color: #ccc;
 }
+.label-running {
+    -fx-text-fill: #a5cee2;
+}
+.label-waiting {
+    -fx-text-fill: #ccc;
+}

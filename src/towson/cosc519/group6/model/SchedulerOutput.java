@@ -37,6 +37,10 @@ public class SchedulerOutput {
     }
 
     public float getAverageWaitTime() {
+        if (jobs.isEmpty()) {
+            return 0;
+        }
+
         return (float) getTotalWaitTime() / (float) jobs.size();
     }
 }

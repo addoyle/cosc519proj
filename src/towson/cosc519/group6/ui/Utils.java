@@ -1,7 +1,6 @@
 package towson.cosc519.group6.ui;
 
 import javafx.collections.ObservableList;
-import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.chart.CategoryAxis;
@@ -19,6 +18,7 @@ import towson.cosc519.group6.model.SchedulerOutput;
 import towson.cosc519.group6.schedulers.Scheduler;
 import towson.cosc519.group6.ui.GanttChart.ExtraData;
 
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static javafx.collections.FXCollections.*;
 import static javafx.scene.layout.AnchorPane.*;
@@ -79,9 +79,10 @@ public class Utils {
      * @param node    Element to add an icon to
      * @param icon    Icon to add
      */
-    public static void iconify(Labeled node, FontAwesome icon) {
+    public static void iconify(Labeled node, FontAwesome icon, String... additionalClass) {
         Label iconLabel = new Label(icon.getIcon());
         iconLabel.getStyleClass().add("i");
+        iconLabel.getStyleClass().addAll(asList(additionalClass));
         node.setGraphic(iconLabel);
     }
 
@@ -213,8 +214,7 @@ public class Utils {
         yAxis.setAutoRanging(false);
         yAxis.setCategories(categories);
 
-        chart.setLegendVisible(true);
-        chart.setLegendSide(Side.RIGHT);
+        chart.setLegendVisible(false);
 
         chart.setBlockHeight(3);
 
