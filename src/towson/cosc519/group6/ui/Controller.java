@@ -48,7 +48,7 @@ public class Controller implements Initializable {
     @FXML private Button btnDemo;
     private final Map<Tab, Scheduler> tabSchedulerMap = new HashMap<>();
     private final ObservableList<Job> jobs = FXCollections.observableArrayList();
-
+    @FXML private Label waitTime;
     /**
      * Initialize the UI
      *
@@ -187,6 +187,9 @@ public class Controller implements Initializable {
 
         // Update the chart
         Utils.updateChart(chart, output);
+
+        //Display Average wait time
+        waitTime.setText(String.valueOf(output.getAverageWaitTime()));
     }
 
     @FXML public void loadDemoClick(ActionEvent e) {
