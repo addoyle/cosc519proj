@@ -65,6 +65,10 @@ public class RunnableJob {
         return job.getLabel();
     }
 
+    public int getPriority() {
+        return job.getPriority();
+    }
+
     public Job getJob() {
         return job;
     }

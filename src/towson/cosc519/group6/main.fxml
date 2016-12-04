@@ -44,6 +44,8 @@
                 <Spinner fx:id="burstField" editable="true" onKeyPressed="#spinnerKeyPressed" prefHeight="27.0" prefWidth="100.0" />
                 <Label text="Start Time:" />
                 <Spinner fx:id="startTimeField" editable="true" onKeyPressed="#spinnerKeyPressed" prefHeight="27.0" prefWidth="100.0" />
+                <Label text="Priority:" />
+                <Spinner fx:id="priorityField" editable="true" onKeyPressed="#spinnerKeyPressed" prefHeight="27.0" prefWidth="100.0" />
                 <Button id="addQueueBtn" fx:id="addBtn" mnemonicParsing="false" onAction="#addtoQueueClick" text="Add to Queue" />
                 <Pane HBox.hgrow="ALWAYS" />
                 <Button fx:id="btnDemo" mnemonicParsing="false" onAction="#loadDemoClick" text="Load Demo" />
@@ -51,11 +53,12 @@
         </ToolBar>
     </top>
     <left>
-        <TableView fx:id="procsTable" editable="true" prefHeight="83.0" prefWidth="198.0" BorderPane.alignment="CENTER">
+        <TableView fx:id="procsTable" editable="true" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="processNumCol" prefWidth="58.0" text="Process" />
                 <TableColumn fx:id="burstTimeCol" prefWidth="66.0" text="Burst" />
                 <TableColumn fx:id="startTimeCol" prefWidth="71.0" text="Start" />
+            <TableColumn fx:id="priorityCol" prefWidth="75.0" text="Priority" />
             </columns>
         </TableView>
     </left>

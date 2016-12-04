@@ -17,10 +17,10 @@ public class SchedulerTest {
         Scheduler scheduler = new RoundRobin();
 
         List<Job> jobs = Arrays.asList(
-                new Job("P1", 5, 2),
-                new Job("P2", 10, 0),
-                new Job("P3", 2, 3),
-                new Job("P4", 3, 2)
+                new Job("P1", 5, 2, 3),
+                new Job("P2", 10, 0, 2),
+                new Job("P3", 2, 3, 4),
+                new Job("P4", 3, 2, 1)
         );
 
         SchedulerOutput output = scheduler.runJobs(jobs);

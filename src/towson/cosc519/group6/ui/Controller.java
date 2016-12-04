@@ -36,12 +36,17 @@ import static towson.cosc519.group6.ui.Utils.iconify;
 public class Controller implements Initializable {
     private static final List<Job> DEMO_JOBS = loadDemoJobs();
     private static final String AVG_WAIT_TIME_MSG = "Average Wait Time: ";
+    private static final int MIN_PRIORITY = 1;
+    private static final int MAX_PRIORITY = 5;
+    private static final int DEFAULT_PRIORITY = 3;
 
     @FXML private Spinner<Integer> burstField;
     @FXML private Spinner<Integer> startTimeField;
+    @FXML private Spinner<Integer> priorityField;
     @FXML private TableColumn<Job, String> processNumCol;
     @FXML private TableColumn<Job, Integer> burstTimeCol;
     @FXML private TableColumn<Job, Integer> startTimeCol;
+    @FXML private TableColumn<Job, Integer> priorityCol;
     @FXML private TableView<Job> procsTable;
     @FXML private TabPane schedTabs;
     @FXML private Button addBtn;
@@ -63,9 +68,11 @@ public class Controller implements Initializable {
         processNumCol.setCellValueFactory(new PropertyValueFactory<>("label"));
         burstTimeCol.setCellValueFactory(new PropertyValueFactory<>("burst"));
         startTimeCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        priorityCol.setCellValueFactory(new PropertyValueFactory<>("priority"));
 
         burstField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE, 1));
         startTimeField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+        priorityField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(MIN_PRIORITY, MAX_PRIORITY, DEFAULT_PRIORITY));
 
         burstField.getEditor().setOnKeyPressed(this::spinnerKeyPressed);
         startTimeField.getEditor().setOnKeyPressed(this::spinnerKeyPressed);
@@ -140,6 +147,7 @@ public class Controller implements Initializable {
         // Sync the text with the actual value
         commitEditorText(burstField);
         commitEditorText(startTimeField);
+        commitEditorText(priorityField);
 
         // Submit process
         if (e.getCode() == KeyCode.ENTER) {
@@ -156,14 +164,16 @@ public class Controller implements Initializable {
         // Sync the text with the actual value
         commitEditorText(burstField);
         commitEditorText(startTimeField);
+        commitEditorText(priorityField);
 
         // Parse input
         int burstTime = burstField.getValue();
         int startTime = startTimeField.getValue();
+        int priority = priorityField.getValue();
         String processName = "P" + Integer.toString(jobs.size());
 
         // Add the job which will automatically update the UI
-        Job job = new Job(processName, burstTime, startTime);
+        Job job = new Job(processName, burstTime, startTime, priority);
         jobs.add(job);
 
         // Update graphs with new process
@@ -230,7 +240,7 @@ public class Controller implements Initializable {
             while ((line = reader.readLine()) != null) {
                 if (line.trim().length() > 0) {
                     String[] parts = line.split(",");
-                    jobs.add(new Job(parts[0], parseInt(parts[1]), parseInt(parts[2])));
+                    jobs.add(new Job(parts[0], parseInt(parts[1]), parseInt(parts[2]), parseInt(parts[3])));
                 }
             }
 
