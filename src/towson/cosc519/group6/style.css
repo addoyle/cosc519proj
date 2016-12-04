@@ -3,13 +3,13 @@
 }
 
 .status-running {
-    -fx-background-color: #a5cee2;
+    -fx-background-color: #8caebf;
 }
 .status-waiting {
     -fx-background-color: #ccc;
 }
 .label-running {
-    -fx-text-fill: #a5cee2;
+    -fx-text-fill: #8caebf;
 }
 .label-waiting {
     -fx-text-fill: #ccc;
