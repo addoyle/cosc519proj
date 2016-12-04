@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -40,6 +41,7 @@ public class Controller implements Initializable {
     private static final int MAX_PRIORITY = 5;
     private static final int DEFAULT_PRIORITY = 3;
 
+    @FXML private ToolBar toolBar;
     @FXML private Spinner<Integer> burstField;
     @FXML private Spinner<Integer> startTimeField;
     @FXML private Spinner<Integer> priorityField;
@@ -106,20 +108,31 @@ public class Controller implements Initializable {
         iconify(lblWaiting, FontAwesome.SQUARE, "label-waiting");
     }
 
-    /*
-     * Copied and pasted from Spinner
+    /**
+     * Runs through all the spinners in the toolbar and commits the current values of each to the spinner
      */
-    private <T> void commitEditorText(Spinner<T> spinner) {
-        if (!spinner.isEditable()) return;
-        String text = spinner.getEditor().getText();
-        SpinnerValueFactory<T> valueFactory = spinner.getValueFactory();
-        if (valueFactory != null) {
-            StringConverter<T> converter = valueFactory.getConverter();
-            if (converter != null) {
-                T value = converter.fromString(text);
+    @SuppressWarnings("unchecked")
+    private void commitSpinners() {
+        List<Spinner<Integer>> spinners = new LinkedList<>();
 
-                if (value != null) {
-                    valueFactory.setValue(value);
+        for (Node node : toolBar.getChildrenUnmodifiable()) {
+            if (Spinner.class.isAssignableFrom(node.getClass())) {
+                spinners.add((Spinner<Integer>) node);
+            }
+        }
+
+        for (Spinner<Integer> spinner : spinners) {
+            if (!spinner.isEditable()) return;
+            String text = spinner.getEditor().getText();
+            SpinnerValueFactory<Integer> valueFactory = spinner.getValueFactory();
+            if (valueFactory != null) {
+                StringConverter<Integer> converter = valueFactory.getConverter();
+                if (converter != null) {
+                    Integer value = converter.fromString(text);
+
+                    if (value != null) {
+                        valueFactory.setValue(value);
+                    }
                 }
             }
         }
@@ -145,9 +158,7 @@ public class Controller implements Initializable {
      */
     @FXML public void spinnerKeyPressed(KeyEvent e) {
         // Sync the text with the actual value
-        commitEditorText(burstField);
-        commitEditorText(startTimeField);
-        commitEditorText(priorityField);
+        commitSpinners();
 
         // Submit process
         if (e.getCode() == KeyCode.ENTER) {
@@ -162,9 +173,7 @@ public class Controller implements Initializable {
      */
     @FXML public void addtoQueueClick(ActionEvent e) {
         // Sync the text with the actual value
-        commitEditorText(burstField);
-        commitEditorText(startTimeField);
-        commitEditorText(priorityField);
+        commitSpinners();
 
         // Parse input
         int burstTime = burstField.getValue();
