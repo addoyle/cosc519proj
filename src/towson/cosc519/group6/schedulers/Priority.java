@@ -12,7 +12,7 @@ public class Priority extends Scheduler {
     protected RunnableJob getNextJob(List<? extends RunnableJob> readyQueue) {
         RunnableJob highestPriority = null;
         for (RunnableJob job : readyQueue) {
-            if (highestPriority == null || job.getPriority() > highestPriority.getPriority()) {
+            if (highestPriority == null || job.getPriority() < highestPriority.getPriority()) {
                 highestPriority = job;
             }
         }
